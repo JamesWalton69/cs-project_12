@@ -48,8 +48,7 @@ def create_document():
     # Configure section start page number to 3
     sectPr = section._sectPr
     pgNumType = OxmlElement('w:pgNumType')
-    pgNumType.set(qn('w:start'), '3')
-    sectPr.append(pgNumType)
+    # pgNumType start at 1 naturally
     
     # Footer with right-aligned page counter (Pure B&W)
     footer = section.footer
@@ -216,8 +215,131 @@ def create_document():
                 tcPr.append(borders)
 
     # ==========================================
+    # PAGE 1: CERTIFICATE
+    # ==========================================
+    p_cert = doc.add_paragraph()
+    p_cert.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    p_cert.paragraph_format.space_before = Pt(24)
+    p_cert.paragraph_format.space_after = Pt(36)
+    r_cert = p_cert.add_run("CERTIFICATE")
+    r_cert.bold = True
+    r_cert.underline = True
+    r_cert.font.name = "Times New Roman"
+    r_cert.font.size = Pt(22)
+    r_cert.font.color.rgb = RGBColor(0, 0, 0)
+    
+    def add_cert_line(text, space_after=12):
+        p = doc.add_paragraph()
+        p.alignment = WD_ALIGN_PARAGRAPH.LEFT
+        p.paragraph_format.space_before = Pt(0)
+        p.paragraph_format.space_after = Pt(space_after)
+        p.paragraph_format.line_spacing = 1.35
+        r = p.add_run(text)
+        r.font.name = "Times New Roman"
+        r.font.size = Pt(12)
+        r.font.color.rgb = RGBColor(0, 0, 0)
+        return p
+
+    u_full = "_" * 72
+    add_cert_line("This is to certify that ___________________________________ (Name of the student)", space_after=12)
+    add_cert_line("bearing Roll Number/Registration Number ____________ is the student of Class XII", space_after=12)
+    add_cert_line("____________. He/she has successfully completed his /her project titled", space_after=12)
+    add_cert_line(u_full, space_after=12)
+    add_cert_line(u_full, space_after=12)
+    add_cert_line("as a part of A.I.S.S.C.E 20_____ under the guidance of his/her ________________ teacher.", space_after=36)
+    
+    add_cert_line("It is further certified that this project is the individual and bona fide work of the candidate.", space_after=64)
+    
+    # Signatures table: Internal Examiner & External Examiner
+    tbl_sig = doc.add_table(rows=1, cols=2)
+    tbl_sig.alignment = WD_TABLE_ALIGNMENT.CENTER
+    c1, c2 = tbl_sig.rows[0].cells
+    c1.width = Inches(3.2)
+    c2.width = Inches(3.2)
+    
+    p_c1 = c1.paragraphs[0]
+    p_c1.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    r_c1 = p_c1.add_run("____________________\nInternal Examiner")
+    r_c1.font.name = "Times New Roman"
+    r_c1.font.size = Pt(12)
+    r_c1.font.color.rgb = RGBColor(0, 0, 0)
+    
+    p_c2 = c2.paragraphs[0]
+    p_c2.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    r_c2 = p_c2.add_run("____________________\nExternal Examiner")
+    r_c2.font.name = "Times New Roman"
+    r_c2.font.size = Pt(12)
+    r_c2.font.color.rgb = RGBColor(0, 0, 0)
+    
+    p_gap = doc.add_paragraph()
+    p_gap.paragraph_format.space_before = Pt(0)
+    p_gap.paragraph_format.space_after = Pt(36)
+    
+    p_prin = doc.add_paragraph()
+    p_prin.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    p_prin.paragraph_format.space_before = Pt(0)
+    p_prin.paragraph_format.space_after = Pt(0)
+    p_prin.paragraph_format.line_spacing = 1.2
+    r_prin = p_prin.add_run("____________________\nPrincipal\nSAINI INTERNATIONAL SCHOOL HOWRAH")
+    r_prin.font.name = "Times New Roman"
+    r_prin.font.size = Pt(12)
+    r_prin.font.color.rgb = RGBColor(0, 0, 0)
+
+    # ==========================================
+    # PAGE 2: ACKNOWLEDGEMENT
+    # ==========================================
+    doc.add_page_break()
+    
+    p_ack = doc.add_paragraph()
+    p_ack.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    p_ack.paragraph_format.space_before = Pt(24)
+    p_ack.paragraph_format.space_after = Pt(36)
+    r_ack = p_ack.add_run("ACKNOWLEDGEMENT")
+    r_ack.bold = True
+    r_ack.underline = True
+    r_ack.font.name = "Times New Roman"
+    r_ack.font.size = Pt(22)
+    r_ack.font.color.rgb = RGBColor(0, 0, 0)
+    
+    add_cert_line("It gives me immense pleasure to present the project titled", space_after=12)
+    add_cert_line(u_full, space_after=12)
+    add_cert_line("________________________________________ (Name of the project). I would like", space_after=12)
+    add_cert_line("to express my gratitude towards my teacher Ms/Mrs/Mr. _______________________", space_after=12)
+    
+    p_ack1 = doc.add_paragraph()
+    p_ack1.paragraph_format.space_before = Pt(0)
+    p_ack1.paragraph_format.space_after = Pt(18)
+    p_ack1.paragraph_format.line_spacing = 1.35
+    p_ack1.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
+    r_ack1 = p_ack1.add_run("under whose guidance and constant supervision the project has been completed. The instructions and suggestions given by him/her has been a major contribution towards the completion of the project.")
+    r_ack1.font.name = "Times New Roman"
+    r_ack1.font.size = Pt(12)
+    r_ack1.font.color.rgb = RGBColor(0, 0, 0)
+    
+    p_ack2 = doc.add_paragraph()
+    p_ack2.paragraph_format.space_before = Pt(0)
+    p_ack2.paragraph_format.space_after = Pt(56)
+    p_ack2.paragraph_format.line_spacing = 1.35
+    p_ack2.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
+    r_ack2 = p_ack2.add_run("I would also like to thank my parents for their encouragement and support towards completion of this project work. I also thank my friends for their help and sharing necessary information (and web links) which helped in preparing the project.")
+    r_ack2.font.name = "Times New Roman"
+    r_ack2.font.size = Pt(12)
+    r_ack2.font.color.rgb = RGBColor(0, 0, 0)
+    
+    p_stud = doc.add_paragraph()
+    p_stud.alignment = WD_ALIGN_PARAGRAPH.LEFT
+    p_stud.paragraph_format.space_before = Pt(0)
+    p_stud.paragraph_format.space_after = Pt(0)
+    p_stud.paragraph_format.line_spacing = 1.2
+    r_stud = p_stud.add_run("____________________\nSignature of the student")
+    r_stud.font.name = "Times New Roman"
+    r_stud.font.size = Pt(12)
+    r_stud.font.color.rgb = RGBColor(0, 0, 0)
+
+    # ==========================================
     # PAGE 3: INDEX
     # ==========================================
+    doc.add_page_break()
     add_h1("INDEX")
     
     index_data = [
