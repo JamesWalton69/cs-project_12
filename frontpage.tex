@@ -1,0 +1,163 @@
+\documentclass[a4paper,10pt]{article}
+
+% Compile with pdfLaTeX in Overleaf.
+% The original PDF's image assets have been preserved as transparent PNGs.
+\usepackage[a4paper,margin=0pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{eso-pic}
+\usepackage[black]{nunito} % rounded sans substitute for Arial Rounded MT Bold
+\usepackage{tgbonum} % bold display-serif substitute for Algerian
+\usepackage{tgtermes} % close substitute for Cambria
+\usepackage{calc}
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\topskip}{0pt}
+\setlength{\headheight}{0pt}
+\setlength{\headsep}{0pt}
+\setlength{\footskip}{0pt}
+
+% All coordinates below are in PDF points from the top-left of an A4 page.
+% This recreates the positions in FRONT PAGE.pdf, with substitute fonts where
+% the source document used non-standard fonts not guaranteed to exist on Overleaf.
+\newcommand{\WatermarkAndBorder}{%
+  \begin{tikzpicture}[remember picture,overlay]
+    % Original pale torch watermark, precisely positioned from the source PDF.
+    \node[anchor=north west,inner sep=0pt,outer sep=0pt]
+      at ([xshift=122.95pt,yshift=-67.80pt]current page.north west)
+      {\includegraphics[width=349.250pt,height=741.350pt]{torch_watermark.png}};
+
+    % Double/triple-line page frame recreated as filled strips to retain the
+    % characteristic alternating black-white-black border of the original.
+    % Top border.
+    \fill[black] ( [xshift=24pt,yshift=-24pt]current page.north west) rectangle
+                 ( [xshift=571.42pt,yshift=-24.72pt]current page.north west);
+    \fill[white] ( [xshift=24pt,yshift=-24.72pt]current page.north west) rectangle
+                 ( [xshift=571.42pt,yshift=-25.44pt]current page.north west);
+    \fill[black] ( [xshift=24pt,yshift=-25.44pt]current page.north west) rectangle
+                 ( [xshift=571.42pt,yshift=-26.88pt]current page.north west);
+    \fill[white] ( [xshift=24pt,yshift=-26.88pt]current page.north west) rectangle
+                 ( [xshift=571.42pt,yshift=-27.60pt]current page.north west);
+    \fill[black] ( [xshift=24pt,yshift=-27.60pt]current page.north west) rectangle
+                 ( [xshift=571.42pt,yshift=-28.32pt]current page.north west);
+
+    % Bottom border (same stripe rhythm as the top border).
+    \fill[black] ( [xshift=24pt,yshift=-813.696pt]current page.north west) rectangle
+                 ( [xshift=571.42pt,yshift=-814.416pt]current page.north west);
+    \fill[white] ( [xshift=24pt,yshift=-814.416pt]current page.north west) rectangle
+                 ( [xshift=571.42pt,yshift=-815.136pt]current page.north west);
+    \fill[black] ( [xshift=24pt,yshift=-815.136pt]current page.north west) rectangle
+                 ( [xshift=571.42pt,yshift=-816.576pt]current page.north west);
+    \fill[white] ( [xshift=24pt,yshift=-816.576pt]current page.north west) rectangle
+                 ( [xshift=571.42pt,yshift=-817.296pt]current page.north west);
+    \fill[black] ( [xshift=24pt,yshift=-817.296pt]current page.north west) rectangle
+                 ( [xshift=571.42pt,yshift=-818.016pt]current page.north west);
+
+    % Left border.
+    \fill[black] ( [xshift=24pt,yshift=-28.32pt]current page.north west) rectangle
+                 ( [xshift=24.72pt,yshift=-813.696pt]current page.north west);
+    \fill[white] ( [xshift=24.72pt,yshift=-28.32pt]current page.north west) rectangle
+                 ( [xshift=25.44pt,yshift=-813.696pt]current page.north west);
+    \fill[black] ( [xshift=25.44pt,yshift=-28.32pt]current page.north west) rectangle
+                 ( [xshift=26.88pt,yshift=-813.696pt]current page.north west);
+    \fill[white] ( [xshift=26.88pt,yshift=-28.32pt]current page.north west) rectangle
+                 ( [xshift=27.60pt,yshift=-813.696pt]current page.north west);
+    \fill[black] ( [xshift=27.60pt,yshift=-28.32pt]current page.north west) rectangle
+                 ( [xshift=28.32pt,yshift=-813.696pt]current page.north west);
+
+    % Right border.
+    \fill[black] ( [xshift=567.10pt,yshift=-28.32pt]current page.north west) rectangle
+                 ( [xshift=567.82pt,yshift=-813.696pt]current page.north west);
+    \fill[white] ( [xshift=567.82pt,yshift=-28.32pt]current page.north west) rectangle
+                 ( [xshift=568.54pt,yshift=-813.696pt]current page.north west);
+    \fill[black] ( [xshift=568.54pt,yshift=-28.32pt]current page.north west) rectangle
+                 ( [xshift=569.98pt,yshift=-813.696pt]current page.north west);
+    \fill[white] ( [xshift=569.98pt,yshift=-28.32pt]current page.north west) rectangle
+                 ( [xshift=570.70pt,yshift=-813.696pt]current page.north west);
+    \fill[black] ( [xshift=570.70pt,yshift=-28.32pt]current page.north west) rectangle
+                 ( [xshift=571.42pt,yshift=-813.696pt]current page.north west);
+  \end{tikzpicture}%
+}
+
+% Place text at the original PDF baseline. The third argument is a horizontal
+% scale factor; vertical letter proportions are left untouched.
+% Usage: \PlaceText{x}{baseline-y}{x-scale}{unused-height}{font commands}{text}
+\newcommand{\PlaceText}[6]{%
+  \node[anchor=base west,inner sep=0pt,outer sep=0pt]
+    at ([xshift=#1pt,yshift=-#2pt]current page.north west)
+    {\scalebox{#3}[1]{{#5 #6}}};%
+}
+
+\newcommand{\CoverTextAndLogo}{%
+  \begin{tikzpicture}[remember picture,overlay]
+    % School name (source: Arial Rounded MT Bold, 44.04 pt).
+    \PlaceText{34.75}{91.440}{1.03645}{50.910}{\fontfamily{Nunito-TLF}\bfseries\fontsize{44.04}{50.91}\selectfont}{SAINI INTERNATIONAL}
+    \PlaceText{81.86}{150.220}{0.99999}{50.910}{\fontfamily{Nunito-TLF}\bfseries\fontsize{44.04}{50.91}\selectfont}{SCHOOL HOWRAH}
+    \fill[black] ([xshift=46.56pt,yshift=-95.54pt]current page.north west) rectangle
+                 ([xshift=548.74pt,yshift=-97.70pt]current page.north west);
+    \fill[black] ([xshift=93.024pt,yshift=-154.10pt]current page.north west) rectangle
+                 ([xshift=502.414pt,yshift=-156.26pt]current page.north west);
+
+    % Subject heading (source text: "Computer science", displayed in a
+    % decorative Algerian face that renders its letters like capitals).
+    \PlaceText{172.72}{234.653}{0.86467}{28.956}{\fontfamily{qbk}\bfseries\fontsize{26.04}{28.956}\selectfont}{COMPUTER SCIENCE}
+
+    % Original school wordmark image (transparent PNG extracted from the PDF).
+    \node[anchor=north west,inner sep=0pt,outer sep=0pt]
+      at ([xshift=124.28pt,yshift=-254.63pt]current page.north west)
+      {\includegraphics[width=346.760pt,height=213.450pt]{school_logo.png}};
+
+    % NAME row.
+    \PlaceText{50.115}{550.278}{1.01291}{32.322}{\fontfamily{Nunito-TLF}\bfseries\fontsize{27.96}{32.322}\selectfont}{NAME}
+    \PlaceText{192.47}{550.278}{0.60320}{32.322}{\fontfamily{Nunito-TLF}\bfseries\fontsize{27.96}{32.322}\selectfont}{:}
+    \PlaceText{205.984}{550.278}{1.01590}{32.769}{\rmfamily\bfseries\fontsize{27.96}{32.769}\selectfont}{Riddhiman Ghosh}
+    \fill[black] ([xshift=205.13pt,yshift=-549.67pt]current page.north west) rectangle
+                 ([xshift=434.83pt,yshift=-551.83pt]current page.north west);
+
+    % CLASS row.
+    \PlaceText{44.81}{600.144}{1.05827}{32.322}{\fontfamily{Nunito-TLF}\bfseries\fontsize{27.96}{32.322}\selectfont}{CLASS}
+    \PlaceText{190.11}{600.144}{0.60320}{32.322}{\fontfamily{Nunito-TLF}\bfseries\fontsize{27.96}{32.322}\selectfont}{:}
+    \PlaceText{212.21}{600.144}{0.75261}{32.769}{\rmfamily\bfseries\fontsize{27.96}{32.769}\selectfont}{XII}
+    \fill[black] ([xshift=212.21pt,yshift=-599.35pt]current page.north west) rectangle
+                 ([xshift=249.05pt,yshift=-601.51pt]current page.north west);
+
+    % STREAM row.
+    \PlaceText{47.89}{650.130}{1.03079}{32.322}{\fontfamily{Nunito-TLF}\bfseries\fontsize{27.96}{32.322}\selectfont}{STREAM}
+    \PlaceText{183.37}{650.130}{0.60320}{32.322}{\fontfamily{Nunito-TLF}\bfseries\fontsize{27.96}{32.322}\selectfont}{:}
+    \PlaceText{205.49}{650.130}{1.00586}{32.769}{\rmfamily\bfseries\fontsize{27.96}{32.769}\selectfont}{Science}
+    \fill[black] ([xshift=205.49pt,yshift=-649.15pt]current page.north west) rectangle
+                 ([xshift=301.61pt,yshift=-651.31pt]current page.north west);
+
+    % YEAR row.
+    \PlaceText{48.15}{700.025}{1.02740}{32.322}{\fontfamily{Nunito-TLF}\bfseries\fontsize{27.96}{32.322}\selectfont}{YEAR}
+    \PlaceText{183.13}{700.025}{0.60320}{32.322}{\fontfamily{Nunito-TLF}\bfseries\fontsize{27.96}{32.322}\selectfont}{:}
+    \PlaceText{205.25}{700.025}{1.08765}{32.769}{\rmfamily\bfseries\fontsize{27.96}{32.769}\selectfont}{2026-27}
+    \fill[black] ([xshift=205.25pt,yshift=-698.86pt]current page.north west) rectangle
+                 ([xshift=314.21pt,yshift=-701.02pt]current page.north west);
+
+    % FILE row.
+    \PlaceText{55.36}{750.007}{0.87290}{32.769}{\rmfamily\bfseries\fontsize{27.96}{32.769}\selectfont}{FILE}
+    \PlaceText{188.94}{750.007}{0.45820}{32.769}{\rmfamily\bfseries\fontsize{27.96}{32.769}\selectfont}{:}
+    \PlaceText{205.37}{750.007}{0.99339}{32.769}{\rmfamily\bfseries\fontsize{27.96}{32.769}\selectfont}{Project}
+    \fill[black] ([xshift=205.37pt,yshift=-748.656pt]current page.north west) rectangle
+                 ([xshift=298.25pt,yshift=-750.816pt]current page.north west);
+
+    % ROLL row. Leave the roll number blank, as in the source PDF.
+    \PlaceText{66.68}{799.993}{0.88010}{32.769}{\rmfamily\bfseries\fontsize{27.96}{32.769}\selectfont}{ROLL}
+    \PlaceText{187.72}{799.993}{0.45820}{32.769}{\rmfamily\bfseries\fontsize{27.96}{32.769}\selectfont}{:}
+  \end{tikzpicture}%
+}
+
+\begin{document}
+% PAGE 1: cover page.
+\AddToShipoutPictureBG*{\WatermarkAndBorder}
+\AddToShipoutPictureFG*{\CoverTextAndLogo}
+\null
+\newpage
+
+% PAGE 2: the second page in the supplied PDF contains only the faded watermark
+% and the same border. It is retained intentionally to match the source file.
+\AddToShipoutPictureBG*{\WatermarkAndBorder}
+\null
+\end{document}
