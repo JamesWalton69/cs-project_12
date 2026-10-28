@@ -246,7 +246,7 @@ def create_document():
     add_cert_line("____________. He/she has successfully completed his /her project titled", space_after=12)
     add_cert_line(u_full, space_after=12)
     add_cert_line(u_full, space_after=12)
-    add_cert_line("as a part of CBSE 20_____ under the guidance of his/her ________________ teacher.", space_after=36)
+    add_cert_line("as a part of A.I.S.S.C.E 20_____ under the guidance of his/her ________________ teacher.", space_after=36)
     
     add_cert_line("It is further certified that this project is the individual and bona fide work of the candidate.", space_after=64)
     
