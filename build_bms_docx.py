@@ -138,7 +138,7 @@ def create_document():
         r.font.color.rgb = RGBColor(0, 0, 0)
         return p
 
-    def add_code_block(code_text):
+    def add_code_block(code_text, font_size_pt=9.5, line_spacing=1.12):
         tbl = doc.add_table(rows=1, cols=1)
         tbl.alignment = WD_TABLE_ALIGNMENT.CENTER
         # Keep the whole code block on one page (no mid-block page splits)
@@ -157,19 +157,24 @@ def create_document():
             </w:tcBorders>
         ''' % nsdecls('w'))
         tcPr.append(borders)
+        tcMar = parse_xml(r'''
+            <w:tcMar %s>
+                <w:top w:w="60" w:type="dxa"/>
+                <w:bottom w:w="60" w:type="dxa"/>
+                <w:left w:w="120" w:type="dxa"/>
+                <w:right w:w="120" w:type="dxa"/>
+            </w:tcMar>
+        ''' % nsdecls('w'))
+        tcPr.append(tcMar)
         
         p = cell.paragraphs[0]
-        p.paragraph_format.space_before = Pt(4)
-        p.paragraph_format.space_after = Pt(4)
-        p.paragraph_format.line_spacing = 1.12
+        p.paragraph_format.space_before = Pt(2)
+        p.paragraph_format.space_after = Pt(2)
+        p.paragraph_format.line_spacing = line_spacing
         run = p.add_run(code_text)
         run.font.name = "Consolas"
-        run.font.size = Pt(9.5)
+        run.font.size = Pt(font_size_pt)
         run.font.color.rgb = RGBColor(0, 0, 0)
-        
-        p_sp = doc.add_paragraph()
-        p_sp.paragraph_format.space_before = Pt(0)
-        p_sp.paragraph_format.space_after = Pt(4)
 
     def add_image_centered(img_path, caption, width_in=5.4):
         if os.path.exists(img_path):
@@ -220,15 +225,15 @@ def create_document():
         ("01", "INTRODUCTION", "sec_intro", "04"),
         ("02", "OBJECTIVES OF THE PROJECT", "sec_objectives", "05"),
         ("03", "PROPOSED SYSTEM", "sec_proposed", "06"),
-        ("04", "SYSTEM DEVELOPMENT LIFE CYCLE (SDLC)", "sec_sdlc", "07"),
-        ("05", "PHASES OF SYSTEM DEVELOPMENT LIFE CYCLE", "sec_phases", "08"),
-        ("06", "FLOW CHART", "sec_flowchart", "15"),
-        ("07", "SOURCE CODE", "sec_sourcecode", "17"),
-        ("08", "OUTPUT", "sec_output", "23"),
-        ("09", "TESTING", "sec_testing", "29"),
-        ("10", "HARDWARE AND SOFTWARE REQUIREMENTS", "sec_hardware", "32"),
-        ("11", "INSTALLATION PROCEDURE", "sec_installation", "33"),
-        ("12", "BIBLIOGRAPHY", "sec_bibliography", "34"),
+        ("04", "SYSTEM DEVELOPMENT LIFE CYCLE (SDLC)", "sec_sdlc", "08"),
+        ("05", "PHASES OF SYSTEM DEVELOPMENT LIFE CYCLE", "sec_phases", "09"),
+        ("06", "FLOW CHART", "sec_flowchart", "16"),
+        ("07", "SOURCE CODE", "sec_sourcecode", "18"),
+        ("08", "OUTPUT", "sec_output", "25"),
+        ("09", "TESTING", "sec_testing", "31"),
+        ("10", "HARDWARE AND SOFTWARE REQUIREMENTS", "sec_hardware", "34"),
+        ("11", "INSTALLATION PROCEDURE", "sec_installation", "35"),
+        ("12", "BIBLIOGRAPHY", "sec_bibliography", "36"),
     ]
     
     idx_tbl = doc.add_table(rows=len(index_data), cols=3)
@@ -387,6 +392,8 @@ def create_document():
     add_bullet("Account Existence Checks: Verifying that account numbers exist prior to executing transactions or lookups.")
     add_bullet("Sufficient Funds Check: Ensuring account balance is strictly greater than or equal to the requested withdrawal amount before executing SQL updates.")
 
+    add_image_centered("images/4.png", "Figure 5.1: Bank Management System Entity-Relationship (ER) Diagram", width_in=3.5)
+
     # ==========================================
     # PAGE 11: PHASES OF SDLC (Database Design & ER Diagram)
     # ==========================================
@@ -410,8 +417,6 @@ def create_document():
     add_bullet("date DATE — Date timestamp of transaction execution.")
     add_bullet("withdrawal_amt FLOAT — Amount debited (0 if deposit).")
     add_bullet("amount_added FLOAT — Amount credited (0 if withdrawal).")
-    
-    add_image_centered("images/4.png", "Figure 5.1: Bank Management System Entity-Relationship (ER) Diagram", width_in=5.4)
 
     # ==========================================
     # PAGE 12: PHASES OF SDLC (Phase 6: Development)
@@ -426,7 +431,6 @@ def create_document():
     add_bullet("Loop Integrity: Implemented a robust while True loop with an explicit exit condition, resolving the previous infinite-loop flaw present in older scripts.")
     add_bullet("Standard Library Utilization: Leveraged Python's built-in datetime module for automated timestamping of financial ledger entries.")
     add_bullet("CBSE Class 12 Alignment: Avoided excessive abstractions, classes/OOP, or external frameworks, keeping the codebase fully aligned with CBSE Class 12 evaluation criteria.")
-    add_body("Collectively, these standards produced a coherent, maintainable codebase in which every function carries a single, well-defined responsibility. This discipline proved decisive during the later integration and testing phase: defects could be traced to a specific module in minutes rather than hours, and the complete source tree remained small enough to be reviewed end-to-end by an examiner in a single sitting.")
 
     # ==========================================
     # PAGE 13: PHASES OF SDLC (Phase 7: Testing)
@@ -468,7 +472,7 @@ def create_document():
     add_h2("OVERALL WORKING PROCESS OF BANK MANAGEMENT SYSTEM")
     add_body("The comprehensive operational workflow of the Bank Management System is diagrammed below. It traces the lifecycle of user interaction from system startup, through operator registration or PIN authentication, into the primary 6-option command dashboard, and through subsequent database synchronization and reporting.")
     
-    add_image_centered("images/5.png", "Figure 6.1: Overall Working Process of Bank Management System", width_in=5.0)
+    add_image_centered("images/5.png", "Figure 6.1: Overall Working Process of Bank Management System", width_in=3.7)
 
     # ==========================================
     # PAGE 16: FLOW CHART (Bank Transaction Process)
@@ -545,7 +549,8 @@ print("Table 'transactions' created successfully.")''')
     # ==========================================
     doc.add_page_break()
     add_h2("2. MAIN SYSTEM ENTRY SCRIPT (main_bank.py - Part 1)")
-    add_body("This script serves as the primary gateway into the application, prompting the user for registration or login.")
+    add_body("The main_bank.py script acts as the master authentication gatekeeper and security boundary for the Bank Management System. Upon execution, the module initializes runtime dependencies, connects to the local MySQL database instance using host, user, and password parameters, and initializes an operational cursor for transactional communication.")
+    add_body("Part 1 implements the application bootstrapper and the operator onboarding sequence. It presents an interactive terminal interface that timestamps system entry using Python's standard datetime module. When Option 1 (Register) is selected, the routine prompts the operator for a new username and a mandatory 4-digit security PIN. It validates the credentials and executes an INSERT query against the user_table relation, followed by an immediate conn.commit() to ensure persistent ACID storage before launching the main banking menu.")
     
     add_code_block('''# main_bank.py - User Authentication and System Gateway
 import datetime as dt
@@ -707,7 +712,7 @@ def main_menu():
     # ==========================================
     doc.add_page_break()
     add_h2("3. BANKING OPERATIONS MODULE (menu.py - Part 3)")
-    add_body("Continuation of menu.py covering Customer Inquiries, Transaction Logs, Account Deletion, and Quit. These final routines close the operational lifecycle: they present read-only views of customer and transaction data, enforce a confirmed deletion sequence that purges both profile and audit records, and provide a controlled exit path that terminates the session cleanly without leaving the cursor or connection open.")
+    add_body("Continuation of menu.py covering Customer Inquiries, Transaction Statement Logs, Account Termination, and Session Exit.")
     
     add_code_block('''        # Feature 3: View Customer Details
         elif n == 3:
@@ -769,7 +774,7 @@ def main_menu():
                 break
 
 if __name__ == '__main__':
-    main_menu()''')
+    main_menu()''', font_size_pt=7.5, line_spacing=1.0)
 
     # ==========================================
     # PAGE 23: OUTPUT (Welcome & Registration)

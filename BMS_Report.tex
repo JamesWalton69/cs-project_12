@@ -347,6 +347,13 @@ The execution model adheres to an interactive procedural loop. Upon script invoc
     \item \textbf{Overdraft Protection:} Comparing requested withdrawal amounts against the current balance (\texttt{amt > current\_bal}) before executing SQL updates.
 \end{itemize}
 
+\vspace{0.4em}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.55\textwidth]{images/4.png}
+    \caption{\textit{Bank Management System Entity-Relationship (ER) Diagram}}
+\end{figure}
+
 \clearpage
 
 % =========================================================================
@@ -379,13 +386,6 @@ Data persistence is managed via a normalized relational database titled \texttt{
     \item \texttt{amount\_added FLOAT} --- Credited amount (0.0 if withdrawal).
 \end{itemize}
 
-\vspace{0.6em}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.76\textwidth]{images/4.png}
-    \caption{\textit{Bank Management System Entity-Relationship (ER) Diagram}}
-\end{figure}
-
 \clearpage
 
 % =========================================================================
@@ -404,8 +404,6 @@ The Development Phase transforms architectural designs into clean, maintainable,
     \item \textbf{Standard Library Interfacing:} Utilized Python's built-in \texttt{datetime} module to automate system timestamping without introducing external third-party dependencies.
     \item \textbf{Pedagogical Alignment:} Kept the code accessible, transparent, and completely free of opaque frameworks or complex OOP abstractions, ensuring 100\% curriculum alignment.
 \end{itemize}
-
-Collectively, these standards produced a coherent, maintainable codebase in which every function carries a single, well-defined responsibility. This discipline proved decisive during the later integration and testing phase: defects could be traced to a specific module in minutes rather than hours, and the complete source tree remained small enough to be reviewed end-to-end by an examiner in a single sitting.
 
 \clearpage
 
@@ -563,7 +561,9 @@ print("Table 'transactions' created successfully.")
 % PAGE 18: SOURCE CODE (main_bank.py Part 1)
 % =========================================================================
 \subsection*{2. MAIN SYSTEM ENTRY SCRIPT (\texttt{main\_bank.py} - Part 1)}
-This script serves as the primary gateway into the application, prompting the user for registration or login.
+The \texttt{main\_bank.py} script acts as the master authentication gatekeeper and security boundary for the Bank Management System. Upon execution, the module initializes runtime dependencies, connects to the local MySQL database instance using host, user, and password parameters, and initializes an operational cursor for transactional communication.
+
+Part 1 implements the application bootstrapper and the operator onboarding sequence. It presents an interactive terminal interface that timestamps system entry using Python's standard \texttt{datetime} module. When Option 1 (Register) is selected, the routine prompts the operator for a new username and a mandatory 4-digit security PIN. It validates the credentials and executes an \texttt{INSERT} query against the \texttt{user\_table} relation, followed by an immediate \texttt{conn.commit()} to ensure persistent ACID storage before launching the main banking menu.
 
 \vspace{0.4em}
 \begin{lstlisting}[language=Python]
