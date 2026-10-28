@@ -792,7 +792,7 @@ if __name__ == '__main__':
 
 enter your choice = 1
 
-Enter a Username = suryah
+Enter a Username = riddhiman
 Enter a 4 DIGIT Password = 1298
 
 USER created successfully!''')
@@ -812,7 +812,7 @@ USER created successfully!''')
 
 enter your choice = 2
 
-Enter your Username = suryah
+Enter your Username = riddhiman
 Enter your 4 DIGIT Password = 1298
 
 Login successful!
@@ -985,9 +985,9 @@ THANK YOU PLEASE VISIT AGAIN''')
     
     test_cases = [
         ("TC ID", "Module", "Test Description", "Test Input", "Expected Result", "Status"),
-        ("TC01", "Auth", "Register valid user", "suryah, 1298", "User created successfully", "PASS"),
-        ("TC02", "Auth", "Login with valid PIN", "suryah, 1298", "Login successful; show menu", "PASS"),
-        ("TC03", "Auth", "Login with wrong PIN", "suryah, 9999", "Invalid username/password", "PASS"),
+        ("TC01", "Auth", "Register valid user", "riddhiman, 1298", "User created successfully", "PASS"),
+        ("TC02", "Auth", "Login with valid PIN", "riddhiman, 1298", "Login successful; show menu", "PASS"),
+        ("TC03", "Auth", "Login with wrong PIN", "riddhiman, 9999", "Invalid username/password", "PASS"),
         ("TC04", "Account", "Create unique account", "Acc: 1001, Rs.50000", "Account Created Successfully", "PASS"),
         ("TC05", "Transact", "Deposit valid amount", "Acc: 1001, +Rs.15000", "Balance updated to 65000", "PASS"),
         ("TC06", "Transact", "Withdraw valid amount", "Acc: 1001, -Rs.5000", "Balance updated to 60000", "PASS"),
